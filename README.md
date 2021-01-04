@@ -1,0 +1,2 @@
+# go_echo_firebase
+GoでechoとFirebaseAuthを利用したAPIサンプル
