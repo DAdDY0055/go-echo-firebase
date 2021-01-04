@@ -1,4 +1,4 @@
-# go_echo_firebase
+# go-echo-firebase
 GoでechoとFirebaseAuthを利用したAPIサンプル
 
 # USAGE
