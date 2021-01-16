@@ -5,7 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
+    ports:
+      - "8080:8080"
   mysql:
     image: mysql:5.7
     environment:

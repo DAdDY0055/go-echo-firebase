@@ -2,20 +2,10 @@
 GoでechoとFirebaseAuthを利用したAPIサンプル
 
 # USAGE
-## Dockerイメージの作成
+## Dockerイメージの作成&起動
 
 ```
-% docker build -t echo-firebase .
-```
-
-```
-% docker-compose up -d
-```
-
-Dockerイメージの起動
-
-```
-% docker run -p 8080:8080 echo-firebase
+% docker-compose up --build
 ```
 
 `localhost:8080`でアクセス
