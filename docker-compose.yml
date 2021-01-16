@@ -13,3 +13,5 @@ services:
       MYSQL_DATABASE: echo_api
       MYSQL_USER: echo_user
       MYSQL_PASSWORD: echo_pass
+    ports:
+      - "33060:3306"
