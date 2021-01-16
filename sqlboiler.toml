@@ -1,0 +1,7 @@
+[mysql]
+  dbname  = "echoAPI"
+  host    = "localhost"
+  port    = 33060
+  user    = "root"
+  pass    = "root"
+  sslmode = "false"
