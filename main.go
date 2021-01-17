@@ -14,7 +14,7 @@ import (
 
 
 func main() {
-	db, err := sql.Open("mysql", "root:pw@tcp(mysql)/db")
+	db, err := sql.Open("mysql", "root:root@tcp(mysql)/echo")
 	fmt.Println("db err:", err)
 	users, err := models.Users().All(context.Background(), db)
 	fmt.Println("users err:", err)
