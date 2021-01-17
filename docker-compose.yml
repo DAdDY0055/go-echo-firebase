@@ -5,13 +5,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
   mysql:
     image: mysql:5.7
+    volumes:
+      - ./db/mysql_init:/docker-entrypoint-initdb.d
+      - ./db/mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: echo_api
-      MYSQL_USER: echo_user
-      MYSQL_PASSWORD: echo_pass
+      MYSQL_DATABASE: echo
+      MYSQL_USER: echo
+      MYSQL_PASSWORD: pass
     ports:
       - "33060:3306"
