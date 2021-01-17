@@ -16,13 +16,13 @@ import (
 func main() {
 	db, err := sql.Open("mysql", "root:pw@tcp(mysql)/db")
 	fmt.Println("db err:", err)
-	products, err := models.Products().All(context.Background(), db)
-	fmt.Println("products err:", err)
+	users, err := models.Users().All(context.Background(), db)
+	fmt.Println("users err:", err)
 
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		fmt.Println("Hello, Golang!")
-		fmt.Println("products", products)
+		fmt.Println("users", users)
 		return c.String(http.StatusOK, "Hello, Golang!2")
 	})
 	e.Logger.Fatal(e.Start(":8080"))

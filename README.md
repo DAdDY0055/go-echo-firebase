@@ -13,7 +13,7 @@ GoでechoとFirebaseAuthを利用したAPIサンプル
 DBアクセス
 
 ```
-% mysql -u root -h 127.0.0.1 -P 33060 -proot echoAPI
+% mysql -u root -h 127.0.0.1 -P 33060 -proot echo
 ```
 
 ## Modelファイルの生成

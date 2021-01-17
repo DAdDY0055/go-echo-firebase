@@ -1,5 +1,5 @@
 [mysql]
-  dbname  = "echoAPI"
+  dbname  = "echo"
   host    = "localhost"
   port    = 33060
   user    = "root"
