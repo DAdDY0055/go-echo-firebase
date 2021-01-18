@@ -14,5 +14,8 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+# Credential File
+cred/*
+
 # MySQL Data
 db/mysql_data/*
