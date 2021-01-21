@@ -31,3 +31,10 @@ DBの定義を変更した後、以下コマンドを実行
 ```
 
 → `models`ディレクトリ配下にSQLBoilerでDB接続用のモデルファイルが自動生成される
+
+
+## FirebaseAuthの設定
+
+`cred/firebase_sec_key.json`に以下の手順で作成したサービスアカウント用の秘密鍵ファイルを配置する
+
+[SDKの初期化](https://firebase.google.com/docs/admin/setup#initialize-sdk)
