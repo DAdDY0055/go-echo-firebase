@@ -29,17 +29,19 @@ func main() {
 		fmt.Println("users", users)
 		return c.String(http.StatusOK, "Hello, Golang!2")
 	})
-	e.GET("/users", registerUser) // TODO: 一旦ブラウザで叩くためGET
+	e.GET("/users", getUser)
+	e.POST("/users", registerUser)
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
+// Firebase関連 TODO: 別モジュールに移動させる
+
+// registerUser ユーザー登録
 func registerUser(c echo.Context) error {
 	ctx := context.Background()
-	app, _ := initFirebaseApp()
-
-	client, err := app.Auth(ctx)
+	client, err := initFirebaseClient(ctx)
 	if err != nil {
-					log.Fatalf("error getting Auth client: %v\n", err)
+		log.Fatalf("error getting Auth client: %v\n", err)
 	}
 
 	params := (&auth.UserToCreate{}).
@@ -58,12 +60,29 @@ func registerUser(c echo.Context) error {
 	return c.String(http.StatusOK, "ユーザーを作成しました")
 }
 
-func initFirebaseApp() (*firebase.App, error) {
+// getUser ユーザー取得
+func getUser(c echo.Context) error {
+	ctx := context.Background()
+	client, err := initFirebaseClient(ctx)
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+
+	uid := c.Param("id")
+	u, err := client.GetUser(ctx, uid)
+	if err != nil {
+		log.Fatalf("error getting user %s: %v\n", uid, err)
+	}
+	return c.String(http.StatusOK, u.Email)
+}
+
+// initFirebaseClient FirebaseClient初期化
+func initFirebaseClient(ctx context.Context) (*auth.Client, error) {
 	opt := option.WithCredentialsFile("cred/firebase_sec_key.json")
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		log.Fatalf("error initializing app: %v\n", err)
 	}
 
-	return app, err
+	return app.Auth(ctx)
 }
