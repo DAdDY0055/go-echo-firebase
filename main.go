@@ -29,7 +29,8 @@ func main() {
 		fmt.Println("users", users)
 		return c.String(http.StatusOK, "Hello, Golang!2")
 	})
-	e.GET("/users", getUser)
+	e.GET("/users/:Id", getUserByID)
+	e.GET("/users", listUser)
 	e.POST("/users", registerUser)
 	e.Logger.Fatal(e.Start(":8080"))
 }
@@ -60,8 +61,24 @@ func registerUser(c echo.Context) error {
 	return c.String(http.StatusOK, "ユーザーを作成しました")
 }
 
-// getUser ユーザー取得
-func getUser(c echo.Context) error {
+// getUserByID IDによるユーザー取得
+func getUserByID(c echo.Context) error {
+	ctx := context.Background()
+	client, err := initFirebaseClient(ctx)
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+
+	uid := c.Param("Id")
+	u, err := client.GetUser(ctx, uid)
+	if err != nil {
+		log.Fatalf("error getting user %s: %v\n", uid, err)
+	}
+	return c.String(http.StatusOK, u.Email)
+}
+
+// listUser 一覧によるユーザー取得
+func listUser(c echo.Context) error {
 	ctx := context.Background()
 	client, err := initFirebaseClient(ctx)
 	if err != nil {
@@ -69,11 +86,13 @@ func getUser(c echo.Context) error {
 	}
 
 	uid := c.Param("id")
-	u, err := client.GetUser(ctx, uid)
+	users := client.Users(ctx, "")
 	if err != nil {
 		log.Fatalf("error getting user %s: %v\n", uid, err)
 	}
-	return c.String(http.StatusOK, u.Email)
+	fmt.Println("u", users)
+
+	return c.String(http.StatusOK, "ユーザー一覧取得") // TODO: 表示
 }
 
 // initFirebaseClient FirebaseClient初期化
