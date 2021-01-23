@@ -33,6 +33,8 @@ func main() {
 	e.GET("/users", listUser)
 	e.POST("/users", registerUser)
 	e.PUT("/users/:Id", updateUser)
+	e.DELETE("/users/:Id", deleteUserByID)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
@@ -120,6 +122,22 @@ func updateUser(c echo.Context) error {
 	}
 	fmt.Println("u", u)
 	return c.String(http.StatusOK, "ユーザーを更新しました")
+}
+
+// deleteUserByID IDによるユーザー削除
+func deleteUserByID(c echo.Context) error {
+	ctx := context.Background()
+	client, err := initFirebaseClient(ctx)
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+
+	uid := c.Param("Id")
+	err = client.DeleteUser(ctx, uid)
+	if err != nil {
+		log.Fatalf("error deleting user %s: %v\n", uid, err)
+	}
+	return c.String(http.StatusOK, "ユーザーを削除しました")
 }
 
 // initFirebaseClient FirebaseClient初期化
