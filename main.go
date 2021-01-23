@@ -32,6 +32,7 @@ func main() {
 	e.GET("/users/:Id", getUserByID)
 	e.GET("/users", listUser)
 	e.POST("/users", registerUser)
+	e.PUT("/users/:Id", updateUser)
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
@@ -93,6 +94,32 @@ func listUser(c echo.Context) error {
 	fmt.Println("u", users)
 
 	return c.String(http.StatusOK, "ユーザー一覧取得") // TODO: 表示
+}
+
+// updateUser ユーザー更新
+func updateUser(c echo.Context) error {
+	ctx := context.Background()
+	client, err := initFirebaseClient(ctx)
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+
+	params := (&auth.UserToUpdate{}).
+		Email("update_user@example.com").
+		EmailVerified(true).
+		PhoneNumber("+15555550100").
+		Password("newPassword").
+		DisplayName("John Doe").
+		PhotoURL("http://www.example.com/12345678/photo.png").
+		Disabled(false)
+
+	uid := c.Param("id")
+	u, err := client.UpdateUser(ctx, uid, params)
+	if err != nil {
+		log.Fatalf("error updating user: %v\n", err)
+	}
+	fmt.Println("u", u)
+	return c.String(http.StatusOK, "ユーザーを更新しました")
 }
 
 // initFirebaseClient FirebaseClient初期化
